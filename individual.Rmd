@@ -1,0 +1,10 @@
+---
+title: "individual"
+output: html_document
+---
+
+```{r}
+
+
+
+```
