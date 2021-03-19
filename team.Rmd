@@ -30,15 +30,15 @@ offensive$Opponent_Opponent <- as.factor(offensive$Opponent_Opponent)
 2.
 ```{r}
 
-bio <- bio %>%
+bioClean <- bio %>%
         mutate(Weight = as.numeric(Weight))
 
 
 
-defense <- defense %>%
+deffClean <- defense %>%
             mutate(across(Tackles_Solo:Pass_PB, as.numeric))
 
-offensive <- offensive %>%
+offClean <- offensive %>%
             mutate(across(Receiving_REC:Passing_INT, as.numeric))
 
 ```
@@ -46,10 +46,10 @@ offensive <- offensive %>%
 3.
 ```{r}
 
-bio <- bio %>% 
+bioClean <- bioClean %>% 
         separate(Height, c('Feet', 'Inches'), sep='-')
 
-bio <- bio %>%
+bioClean <- bioClean %>%
         mutate(Feet = as.numeric(Feet), Inches = as.numeric(Inches))
 
 ```
@@ -60,6 +60,57 @@ Part 2
 1.
 ```{r}
 
+offClean <- offClean %>%
+              pivot_longer(cols = Receiving_REC:Passing_INT, names_to = "stat")
 
+print(offClean)
 
 ```
+
+2.
+```{r}
+
+ggplot(offClean, aes(value)) + geom_histogram(bins = 15) + facet_wrap(~ stat, scales = "free")
+
+```
+
+3.
+```{r}
+
+#print(offClean)
+
+ok <- offClean %>%
+      filter(stat == 'Receiving_YDS', Opponent_Opponent == 'Oklahoma')
+
+or <- offClean %>%
+      filter(stat == 'Receiving_YDS', Opponent_Opponent == 'Oregon')
+
+
+ggplot(aes(x=value, y=Name), data=ok) + geom_point()
+ggplot(aes(x=value, y=Name), data=or) + geom_point()
+
+```
+4.
+```{r}
+
+bioClean <- bioClean %>% 
+              separate(Hometown, c('City', 'State'), sep=',')
+
+```
+
+5.
+```{r}
+
+bioClean %>%
+          select(State) %>%
+          group_by(State) %>%
+          summarize(count = n())
+
+```
+
+<br />
+Part 3 
+<br />
+1. 
+
+
