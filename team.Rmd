@@ -1,0 +1,65 @@
+---
+title: "team"
+output: html_document
+---
+
+```{r} 
+
+library(readxl)
+library(tidyverse)
+library(ggplot2)
+defense <- read_excel('cyclonesFootball2020.xlsx', sheet='Defensive')
+offensive <- read_excel('cyclonesFootball2020.xlsx', sheet='Offensive')
+bio <- read_excel('cyclonesFootball2020.xlsx', sheet='Biography')
+print(offensive)
+```
+
+Part One:
+<br />
+1.
+
+```{r}
+
+defense$Name <- as.factor(defense$Name)
+defense$Opponent_Opponent <- as.factor(defense$Opponent_Opponent)
+
+offensive$Name <- as.factor(offensive$Name)
+offensive$Opponent_Opponent <- as.factor(offensive$Opponent_Opponent)
+
+```
+2.
+```{r}
+
+bio <- bio %>%
+        mutate(Weight = as.numeric(Weight))
+
+
+
+defense <- defense %>%
+            mutate(across(Tackles_Solo:Pass_PB, as.numeric))
+
+offensive <- offensive %>%
+            mutate(across(Receiving_REC:Passing_INT, as.numeric))
+
+```
+
+3.
+```{r}
+
+bio <- bio %>% 
+        separate(Height, c('Feet', 'Inches'), sep='-')
+
+bio <- bio %>%
+        mutate(Feet = as.numeric(Feet), Inches = as.numeric(Inches))
+
+```
+
+<br />
+Part 2
+<br />
+1.
+```{r}
+
+
+
+```
