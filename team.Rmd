@@ -112,5 +112,78 @@ bioClean %>%
 Part 3 
 <br />
 1. 
+```{r}
+
+ggplot(bioClean, aes(State)) + geom_bar() + theme(axis.text.x = element_text(angle = 90)) 
+
+```
+2.
+```{r}
+
+brock <- offClean %>%
+            filter(Name == "Purdy, Brock")
 
 
+#brockSum <- brock %>%
+              #summarize(totalPassTD = sum(Passing_TD), totalRushTD = sum(Rushing_TD), )
+
+team <- offClean %>%
+            filter(Name != 'Purdy, Brock')
+
+#ggplot(brock, aes(x = Opponent_Opponent, y = Rushing_TD)) + geom_bar(stat = 'identity')
+
+```
+
+
+3.
+```{r}
+
+defense2019 <- read_excel('cyclonesFootball2019.xlsx', sheet='Defensive')
+offense2019 <- read_excel('cyclonesFootball2019.xlsx', sheet='Offensive')
+bio2019 <- read_excel('cyclonesFootball2019.xlsx', sheet='Biography')
+
+defense2020 <- read_excel('cyclonesFootball2020.xlsx', sheet='Defensive')
+offense2020 <- read_excel('cyclonesFootball2020.xlsx', sheet='Offensive')
+bio2020 <- read_excel('cyclonesFootball2020.xlsx', sheet='Biography')
+
+
+```
+
+```{r}
+
+deffClean19 <- defense2019 %>%
+            mutate(across(Tackles_Solo:Pass_PB, as.numeric))
+
+offClean19 <- offense2019 %>%
+            mutate(across(Rushing_ATT:Passing_INT, as.numeric))
+
+deffClean20 <- defense2020 %>%
+            mutate(across(Tackles_Solo:Pass_PB, as.numeric))
+
+offClean20 <- offense2020 %>%
+            mutate(across(Receiving_REC:Passing_INT, as.numeric))
+
+defSummary <- deffClean19 %>%
+                group_by(Name) %>%
+                mutate(Tackles_Total = Tackles_Solo + Tackles_ASST) %>%
+                summarize(Total_Tackles=sum(Tackles_Total), )
+
+defSummary20 <- deffClean %>%
+                group_by(Name) %>%
+                mutate(Tackles_Total = Tackles_Solo + Tackles_ASST) %>%
+                summarize(Total_Tackles=sum(Tackles_Total), )
+
+offClean19 <- offClean19 %>%
+                group_by(Name) %>%
+                summarize(totalReceivingTD = sum(Receiving_TD), totalRushingTD = sum(Rushing_TD), meanReceivingTD = mean(Receiving_TD), meanRushingTD = mean(Rushing_TD))
+head(offClean19)
+
+offCleanTemp <- offClean20 %>%
+                group_by(Name) %>%
+                summarize(totalReceivingTD = sum(Receiving_TD), totalRushingTD = sum(Rushing_TD), meanReceivingTD = mean(Receiving_TD), meanRushingTD = mean(Rushing_TD))
+
+head(offCleanTemp)
+
+
+```
+This show that Breece Hall is the most improved player over 2019 through 2020.
